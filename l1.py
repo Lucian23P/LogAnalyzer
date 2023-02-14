@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import colorchooser
 from tkinter import filedialog
 
-def click():
+def changecolor():
     color = colorchooser.askcolor()
     print(color)
     colorHex = color[1]
@@ -33,19 +33,31 @@ def save():
         return
 
 window = Tk()
-button = Button(text="color!", command=click)
+#button = Button(text="color!", command=changecolor)
 window.geometry("420x520")
 
 menubar = Menu(window)
 window.config(menu=menubar)
-button_save = Button(window, text="save", command=save)
-button_file = Button(window, text="file", command=openfile)
+
+Filemenu = Menu(menubar, tearoff=0)
+Viewmenu = Menu(menubar, tearoff=0)
+menubar.add_cascade(label="File", menu=Filemenu)
+menubar.add_cascade(label="View", menu=Viewmenu)
+Filemenu.add_command(label="Open File", command=openfile)
+Filemenu.add_command(label="Save File", command=save)
+Filemenu.add_separator()
+Filemenu.add_command(label="Exit", command=quit)
+Viewmenu.add_command(label="Color", command=changecolor)
+
+#button_save = Button(window, text="save", command=save)
+#button_file = Button(window, text="file", command=openfile)
 text = Text(window)
 button_s = Button(window, text="submit", command=submit)
 
-button_save.pack(side = TOP)
+window.minsize(300, 500) # sets the window minimum size to 300x500px
+#button_save.pack(side = TOP)
 text.pack(side = TOP)
-button.pack(side = BOTTOM)
-button_file.pack(side = BOTTOM)
+#button.pack(side = BOTTOM)
+#button_file.pack(side = BOTTOM)
 button_s.pack(side = BOTTOM)
 window.mainloop()
