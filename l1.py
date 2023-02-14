@@ -1,6 +1,9 @@
 from tkinter import *
 from tkinter import colorchooser
 from tkinter import filedialog
+from tkinter import ttk
+import time
+from tkinter.ttk import *
 
 def changecolor():
     color = colorchooser.askcolor()
@@ -11,6 +14,17 @@ def changecolor():
 def submit():
     input = text.get("1.0", END)
     print(input)
+
+def download():
+    print("sal")
+    x = 1
+    while x <= 10:
+        progressbar1['value'] += 10
+        window.update_idletasks()
+        time.sleep(0.5)
+        x += 1
+    progressbar1['value'] = 0
+
 
 def openfile():
     filepath = filedialog.askopenfilename(initialdir="C:\\Users\\lpadurean\\PycharmProjects\\pythonProject\\",
@@ -33,11 +47,22 @@ def save():
         return
 
 window = Tk()
-#button = Button(text="color!", command=changecolor)
+button = Button(text="download", command=download)
 window.geometry("420x520")
+button.pack(side=BOTTOM)
 
 menubar = Menu(window)
 window.config(menu=menubar)
+
+notebook = ttk.Notebook(window)
+
+progressbar1 = Progressbar(window, orient=HORIZONTAL, length=333)
+progressbar1.pack(pady=5)
+
+tab1 = Frame(notebook)
+tab2 = Frame(notebook)
+notebook.add(tab1, text="tab1")
+notebook.add(tab2, text="tab2")
 
 Filemenu = Menu(menubar, tearoff=0)
 Viewmenu = Menu(menubar, tearoff=0)
@@ -53,9 +78,11 @@ Viewmenu.add_command(label="Color", command=changecolor)
 #button_file = Button(window, text="file", command=openfile)
 text = Text(window)
 button_s = Button(window, text="submit", command=submit)
+#button_d = Button(window, text="download", command=submit)
 
 window.minsize(300, 500) # sets the window minimum size to 300x500px
 #button_save.pack(side = TOP)
+notebook.pack(expand=TRUE, fill="both")
 text.pack(side = TOP)
 #button.pack(side = BOTTOM)
 #button_file.pack(side = BOTTOM)
