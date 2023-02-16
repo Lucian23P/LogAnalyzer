@@ -60,13 +60,8 @@ def functionevent1(event):
     print("ai apasat tasta: " + event.keysym)
 
 
-#   main window declaration and configuration /////////////////////////////////////////////////////////////////////////
+#   main window declaration //////////////////////////////////////////////////////////////////////////////////////////
 window = Tk()
-window.bind("<Key>", functionevent1)
-window.minsize(1280, 720)  # sets the window minimum size to 1024x768px
-window.geometry("1280x720")
-window.title("Log Analyzer")
-window.config(menu=menubar)
 
 #   widget declarations and configuration
 button = Button(text="download", command=download)
@@ -97,6 +92,13 @@ notebook.pack(expand=TRUE, fill="both")
 text.pack(side=TOP)
 button_s.pack(side=BOTTOM)
 progressbar1.pack(pady=5)
+
+#   main window configuration ////////////////////////////////////////////////////////////////////////////////////////
+window.bind("<Key>", functionevent1)
+window.minsize(1280, 720)  # sets the window minimum size to 1024x768px
+window.geometry("1280x720")
+window.title("Log Analyzer")
+window.config(menu=menubar)
 
 #   mainloop /////////////////////////////////////////////////////////////////////////////////////////////////////////
 window.mainloop()
