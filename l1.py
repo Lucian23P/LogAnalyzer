@@ -7,6 +7,17 @@ from tkinter import ttk
 import time
 from tkinter.ttk import *
 import random
+import smtplib
+
+
+# global variables ////////////////////////////////////////////////////////////////////////////////////////////////////
+# email_service global variables:
+email_sender = ""  # set_email_sender()
+email_receiver = ""  # set_email_receiver()
+email_sender_password = ""  # set_email_sender_password()
+email_subject = ""  # set_email_subject()
+email_body = ""  # set_email_body()
+email_message = ""  # set email message
 
 
 #   functions declarations and definitions ////////////////////////////////////////////////////////////////////////////
@@ -18,8 +29,8 @@ def changecolor():
 
 
 def submit():
-    input = text.get("1.0", END)
-    print(input)
+    email_message = text.get("1.0", END)
+    create_email_window()
 
 
 def download():
@@ -60,10 +71,66 @@ def functionevent1(event):
     print("ai apasat tasta: " + event.keysym)
 
 
+def print_coordinates1():
+    print("Cursor location: " + str(Event.x) + "," + str(Event.y))
+
+
+def email_send():
+    # email functionality
+    server1 = smtplib.SMTP("smtp.gmail.com", 587)
+    server1.starttls()
+    server1.login(email_sender, email_sender_password)
+    print("Logged in...")
+    server1.sendmail(email_sender, email_receiver, email_message)
+
+
+def create_email_window():
+    new_window = Toplevel()
+
+    label_email_sender = Label(new_window, text="Sender", width=16)
+    label_email_receiver = Label(new_window, text="Receiver")
+    label_email_password = Label(new_window, text="Password")
+    label_email_subject = Label(new_window, text="Subject")
+
+    email_sender_EB = Entry(new_window, width=50)
+    email_receiver_EB = Entry(new_window, width=50)
+    email_sender_password_EB = Entry(new_window, width=50)
+    email_subject_EB = Entry(new_window, width=50)
+
+    button_send_email = Button(new_window, text="Send E-mail")  # , command=email_send)
+
+    email_sender_EB.insert(0, '@gmail.com')
+    email_receiver_EB.insert(0, '@gmail.com')
+    email_sender_password_EB.config(show="$")
+
+    # email_grid:
+    label_email_sender.grid(row=0, column=0)
+    label_email_password.grid(row=1, column=0)
+    label_email_receiver.grid(row=2, column=0)
+    label_email_subject.grid(row=3, column=0)
+
+    email_sender_EB.grid(row=0, column=1)
+    email_receiver_EB.grid(row=2, column=1)
+    email_sender_password_EB.grid(row=1, column=1)
+    email_subject_EB.grid(row=3, column=1)
+    button_send_email.grid(row=4, column=0, columnspan=2)
+
+    email_sender = email_sender_EB.get()
+    email_receiver = email_receiver_EB.get()
+    email_sender_password = email_sender_password_EB.get()
+    email_subject = email_subject_EB.get()
+    email_body = """Hello {},
+    {}
+    Have a good day,
+    {}
+    """.format(email_receiver, email_message, email_sender)
+
+    new_window.geometry("430x112")
+
+
 #   main window declaration //////////////////////////////////////////////////////////////////////////////////////////
 window = Tk()
 
-#   widget declarations and configuration
 button = Button(text="download", command=download)
 text = Text(window)
 button_s = Button(window, text="submit", command=submit)
@@ -92,13 +159,21 @@ notebook.pack(expand=TRUE, fill="both")
 text.pack(side=TOP)
 button_s.pack(side=BOTTOM)
 progressbar1.pack(pady=5)
+#button_send_email.pack()
 
 #   main window configuration ////////////////////////////////////////////////////////////////////////////////////////
-window.bind("<Key>", functionevent1)
 window.minsize(1280, 720)  # sets the window minimum size to 1024x768px
 window.geometry("1280x720")
 window.title("Log Analyzer")
 window.config(menu=menubar)
+
+# keys and mouse actions /////////////////////////////////////////////////////////////////////////////////////////////
+window.bind("<Key>", functionevent1) # pairs a key press event with a function
+#window.bind("Motion", print_coordinates1()) # motion is used for coordinates of the cursor
+#window.bind("Button-1", functionevent3()) # binds mouse button 1
+#window.bind("Enter", print_coordinates_click())
+#window.bind("Release", print_coordinates_releaseclick())
+
 
 #   mainloop /////////////////////////////////////////////////////////////////////////////////////////////////////////
 window.mainloop()
